@@ -2,8 +2,6 @@
 depth first values
 Write a function, depthFirstValues, that takes in the root of a binary tree. The function should return an array containing all values of the tree in depth-first order.
 
-Hey. This is our first binary tree problem, so you should be liberal with watching the Approach and Walkthrough. Be productive, not stubborn. -AZ
-
 test_00:
 const a = new Node('a');
 const b = new Node('b');
@@ -86,7 +84,7 @@ depthFirstValues(null);
 //    -> []
 */
 
-// Depth-First - Traversal Oorder : Root -> Left -> Right ... Emit at first appearance of node.
+// Depth-First - Traversal Order : Root -> Left -> Right ... Emit at first appearance of node.
 
 function Node(val) {
   this.val = val;

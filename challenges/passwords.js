@@ -20,6 +20,12 @@ The strings must be returned in order reflecting the order of letters in 'chars'
 
 */
 
+// O(n* k^n) time complexity - k is the number of possible characters and n is the length of the password.
+// The time complexity is due to the fact that there are k^n possible outcomes of length n, and for each of these outcomes, the function needs
+// to concatenate the result with each of the k possible characters, which takes O(n) time.
+// O(n* k^n) space complexity -  k is the number of possible characters and n is the length of the password.
+// The space complexity is due to the fact that the function needs to store all possible outcomes in the outcomes array.
+// Helper function approach:
 const passwords = (chars, n) => {
   // declare outcomes, an array used to store all possible outcomes of passwords
   const outcomes = [];
@@ -37,7 +43,9 @@ const passwords = (chars, n) => {
       generateOutcomes(results + chars[i]);
     }
   };
+  // invoke generateOutcomes with an empty string for n = 0
   generateOutcomes('');
+  // return outcomes
   return outcomes;
 };
 

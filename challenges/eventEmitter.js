@@ -36,26 +36,44 @@ Caveats:
 // }
 
 // /*
-// Inherit the 'on' method in the prototype object of the EventEmitter constructor that accepts a function name and function definition and
-// registers an event listener for the specified function name.
-// This should mimic the behavior of event listeners. If we repeatedly call the 'on' method with the same event name, it should continue to call all old function(s) as well.
-// We can have multiple listeners for one event.
-// */
+//   Inherit the 'on' method in the prototype object of the EventEmitter constructor that accepts a function name and function definition and
+//   registers an event listener for the specified function name.
+//   This should mimic the behavior of event listeners. If we repeatedly call the 'on' method with the same event name, it should continue to call all old function(s) as well.
+//   We can have multiple listeners for one event.
+//   */
 // EventEmitter.prototype.on = function (funcName, func) {
 //   if (!this.listeners[funcName]) this.listeners[funcName] = [func];
 //   else this.listeners[funcName].push(func);
 // };
 
 // /*
-// Inherit the 'trigger' method in the prototype object of the EventEmitter constructor that accepts a function name and any additional arguments if any and
-// triggers / invokes the functions(s) with the specified function name. If there is no such event listener for the event name, throw an error.
-// */
+//   Inherit the 'trigger' method in the prototype object of the EventEmitter constructor that accepts a function name and any additional arguments if any and
+//   triggers / invokes the functions(s) with the specified function name. If there is no such event listener for the event name, throw an error.
+//   */
 // EventEmitter.prototype.trigger = function (funcName, ...args) {
 //   if (!this.listeners[funcName])
-//     throw new Error(`Error: No event listener assigned to '${funcName}' event.`);
+//     throw new Error(
+//       `Error: No event listener assigned to '${funcName}' event.`
+//     );
 //   this.listeners[funcName].forEach((func) => {
 //     func(...args);
 //   });
+// };
+
+// /*
+//   Inherit the 'off' method in the prototype object of the EventEmitter constructor that accepts function name and function definition
+//   and removes the specified listener function for the event.
+//   If there is no listener registered for the event or no listener function matching the provided function for the event name, throw an error.
+//   */
+// EventEmitter.prototype.off = function (funcName, func) {
+//   if (!this.listeners[funcName])
+//     throw new Error(`Error: No listeners found for '${funcName}' event.`);
+//   const index = this.listeners[funcName].indexOf(func);
+//   if (index === -1)
+//     throw new Error(
+//       `Error: Listener function not found for '${funcName}' event.`
+//     );
+//   this.listeners[funcName].splice(index, 1);
 // };
 
 // //***************  Tests: *****************//
@@ -84,6 +102,7 @@ Caveats:
 // const instance2 = new EventEmitter();
 // let countByOne = 0;
 // let countByTwo = 0;
+// let countByThree = 0;
 // // add event listener for 'count'
 // instance2.on('count', () => (countByOne += 1));
 // // add event listener for same event 'count' with a separate function definition
@@ -98,39 +117,65 @@ Caveats:
 // instance2.trigger('count');
 // console.log(countByOne); // -> 2
 // console.log(countByTwo); // -> 4
-// trigger undefined 'subtract' event and check if an error is thrown
-// instance2.trigger('subtract'); // -> Errpr: No event listener assigned to 'subtract' event.
+// // trigger undefined 'subtract' event and check if an error is thrown
+// // instance2.trigger('subtract'); // -> Error: No event listener assigned to 'subtract' event.
+
+// // declare incrementByThree. We need to provide labels/function names so that we save the
+// // function reference in memory to pass into the 'off' method when removing the event listener
+// const incrementByThree = () => (countByThree += 3);
+// // add event listener for 'count' with incrementByThree listener function
+// instance2.on('count', incrementByThree);
+// // chceck if event listener was added
+// console.log(instance2.listeners); // -> { count: [ [λ], [λ], [λ: incrementByThree] ] }
+// // trigger 'count' event
+// instance2.trigger('count');
+// console.log(countByOne); // -> 3
+// console.log(countByTwo); // -> 6
+// console.log(countByThree); // -> 3
+// // remove 'incrementByThree' listener function for 'count' event
+// instance2.off('count', incrementByThree);
+// // check if event listener was removed
+// console.log(instance2.listeners); // -> { count: [ [λ], [λ] ] }
 
 // Class-based Inheritance:
 
 /*
-Define class EventEmitter initialized with a constructor that sets up an
-initial state of event listeners intialized as an empty object
-*/
+  Define class EventEmitter initialized with a constructor that sets up an
+  initial state of event listeners intialized as an empty object
+  */
 class EventEmitter {
   constructor() {
     this.listeners = {};
   }
 
   /*
-  Define an on' method in the prototype object of the EventEmitter constructor that accepts a function name and function definition and
-  registers an event listener for the specified function name.
-  This should mimic the behavior of event listeners. If we repeatedly call the 'on' method with the same event name, it should continue to call all old function(s) as well.
-  We can have multiple listeners for one event.
-  */
+    Define an 'on' method that accepts a function name and function definition and registers an event listener for the specified function name.
+    This should mimic the behavior of event listeners. If we repeatedly call the 'on' method with the same event name, it should continue to call all old function(s) as well.
+    We can have multiple listeners for one event.
+    */
   on(funcName, func) {
     if (!this.listeners[funcName]) this.listeners[funcName] = [func];
     else this.listeners[funcName].push(func);
   }
 
+  /*
+    Define a 'trigger' method that accepts a function name and any additional arguments if any and
+    triggers / invokes the functions(s) with the specified function name. If there is no such event listener for the event name, throw an error.
+    */
   trigger(funcName, ...args) {
     if (!this.listeners[funcName])
-      throw new Error(`Error: No event listener for '${funcName}' event.`);
+      throw new Error(
+        `Error: No event listener assigned to '${funcName}' event.`
+      );
     this.listeners[funcName].forEach((func) => {
       func(...args);
     });
   }
 
+  /*
+    Define an 'off' method that accepts a function name and function definition and removes the specified listener function for the event.
+    If there is no listener registered for the event or no listener function matching the provided function for the event name, throw an error.
+    */
   off(funcName, func) {
     if (!this.listeners[funcName])
       throw new Error(`Error: No listeners found for '${funcName}' event.`);
@@ -148,13 +193,14 @@ class EventEmitter {
 const instance = new EventEmitter();
 let countByOne = 0;
 let countByTwo = 0;
-/* 
-declare incrementByOne, incrementByTwo, and incrementByThree. We need to provide labels/function names so that we save the 
-function reference in memory to pass into the 'off' method when removing the event listener
-*/
+let countByThree = 0;
+/*
+  declare incrementByOne, incrementByTwo, and incrementByThree. We need to provide labels/function names so that we save the
+  function reference in memory to pass into the 'off' method when removing the event listener
+  */
 const incrementByOne = () => (countByOne += 1);
 const incrementByTwo = () => (countByTwo += 2);
-const incrementByThree = () => (countByTwo += 3);
+const incrementByThree = () => (countByThree += 3);
 // add event listener for 'count' with incrementByOne callback
 instance.on('count', incrementByOne);
 // add event listener for 'count' with incrementByTwo callback
@@ -166,17 +212,17 @@ console.log(`countByOne: ${countByOne}, countByTwo: ${countByTwo}`); // -> count
 instance.trigger('count');
 console.log(`countByOne: ${countByOne}, countByTwo: ${countByTwo}`); // -> countByOne: 2, countByTwo: 4
 // trigger undefined 'subtract' event and check if an error is thrown
-// instance.trigger('subtract'); // -> No event listener assigned to 'subtract' event.
+// instance.trigger('subtract'); // -> Error: No event listener assigned to 'subtract' event.
 // check if the event listener was added
 console.log(instance.listeners); // -> { count: [ [λ: incrementByOne], [λ: incrementByTwo] ] }
-// remove event listener for 'incrementByOne' callback
+// remove 'incrementByOne' listener function for 'count' event
 instance.off('count', incrementByOne);
 // check if the event listener for 'incrementByOne' was removed
 console.log(instance.listeners); // -> { count: [ [λ: incrementByTwo] ] }
 // trigger 'count' event again
 instance.trigger('count');
 console.log(`countByOne: ${countByOne}, countByTwo: ${countByTwo}`); // -> countByOne: 2, countByTwo: 6
-// remove undefined 'subtract' event and check if an error is thrown
+// remove 'incrementByTwp' listener function for undefined 'subtract' event and check if an error is thrown
 // instance.off('subtract', incrementByTwo); // -> Error: No listeners found for 'subtract' event.
-// remove 'incrementByThree' function that was not added to event listener and check if an error is thrown
+// remove 'incrementByThree' listener function that was not added to 'count' event and check if an error is thrown
 // instance.off('count', incrementByThree); // -> Error: Listener function not found for 'count' event.

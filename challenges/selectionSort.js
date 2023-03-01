@@ -13,7 +13,11 @@ whole array, the array will end up being sorted.
 
 */
 
-// O(n^2) time complexity - nested for loop where n is the length of array. The outer loop is O(n-1) and the inner loop is O(n-2)/2.
+// O(n^2) time complexity - nested for-loop where n is the length of array. At worst, we need to swap the position of every element in the array.
+// To sort an array, we use a nested for-loop where n is the length of the array. The outer loop iterates through the array with n integers.
+// The inner loop iterates through n-1, n-2, ..., 1 integers to compare each integer and possibly swap if we find a smaller integer.
+// The total number of comparisons made in the inner loop is the sum of (n-1) + (n-2) + (n-3) + ... + 1. 
+// This can be simplified using the arithmetic series formula to n(n-1)/2, which evaluates to O(n^2).
 // O(1) space complexity - constant memory allocated for variables
 const selectionSort = (array) => {
   // iterate through array starting at position i = 0
@@ -40,4 +44,3 @@ const selectionSort = (array) => {
 };
 
 console.log(selectionSort([4, -2, 0, 8])); // -> [-2, 0, 4, 8]
-

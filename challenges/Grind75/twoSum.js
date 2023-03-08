@@ -34,26 +34,88 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 
 */
 
+// Hashmap approach
+// XX time complexity -
+// XX space complexity -
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+// const twoSum = function (nums, target) {
+//   // declare map to track the remaining value needed to reach target
+//   // the key will be the remaining value and the associated value will be an array of the indices
+//   const map = {};
+//   // iterate through nums
+//   for (let i = 0; i < nums.length; i++) {
+//     const remainder = target - nums[i];
+//     // at each iteration, check if nums[i] is the missing remainder value needed in map and if so,
+//     if (map[nums[i]]) {
+//       // add the current index position to the array of indices and return it
+//       map[nums[i]].push(i);
+//       return map[nums[i]];
+//       // else add the needed remainder to map along with the current index position
+//     } else map[remainder] = [i];
+//   }
+// };
+
+// console.log(twoSum([2, 7, 13, 15], 9));
+
+// Refactored Hashmap approach:
+// XX time complexity -
+// XX space complexity -
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+// const twoSum = function (nums, target) {
+//   // declare map to track the remaining value needed to reach target
+//   // the key will be the remaining value and the associated value will be the index position
+//   const map = {};
+//   // iterate through nums
+//   for (let i = 0; i < nums.length; i++) {
+//     const remainder = target - nums[i];
+//     // Note: we need to check if it is undefined and not for truthy because the when i = 0, it will evaluate to falsy
+//     // at each iteration, check if nums[i] is the missing remainder value needed in map and if so,
+//     if (map[nums[i]] !== undefined) {
+//       // add the current index position to the array of indices and return it==
+//       return [map[nums[i]], i];
+//       // else add the needed remainder to map along with the current index position
+//     } else map[remainder] = i;
+//   }
+// };
+
+// console.log(twoSum([2, 7, 13, 15], 9));
+
+// Two-pointer Approach: Best for sorted input array following the same constraints as above
+// XX time complexity -
+// XX space complexity -
+
 /**
  * @param {number[]} nums
  * @param {number} target
  * @return {number[]}
  */
 const twoSum = function (nums, target) {
-  // declare map to track the remaining value needed to reach target
-  // the key will be the remaining value and the associated value will be an array of the indices
-  const map = {};
-  // iterate through nums
-  for (let i = 0; i < nums.length; i++) {
-    const remainder = target - nums[i];
-    // at each iteration, check if nums[i] is the missing remainder value needed in map and if so,
-    if (map[nums[i]]) {
-      // add the current index position to the array of indices and return it
-      map[nums[i]].push(i);
-      return map[nums[i]];
-      // else add the needed remainder to map along with the current index position 
-    } else map[remainder] = [i];
+  // sort the nums array in numerical order
+  // const sortedNums = [...nums].sort((a,b) => a - b);
+  // declare two pointer variables at the start and end of the array
+  let start = 0;
+  let end = nums.length - 1;
+  // execute while loop as long as start is less than end
+  while (start < end) {
+    // check if nums[start] + nums[end] is equal to target and if so, return an array with the start and end indices as elements
+    if (Math.abs(nums[start] + nums[end]) === Math.abs(target))
+      return [start, end];
+    // else check if nums[start] + nums[end] is less than target and if so, increment start
+    else if (Math.abs(nums[start] + nums[end]) < Math.abs(target)) start++;
+    // else decrement end
+    else end--;
   }
 };
 
-console.log(twoSum([2, 7, 13, 15], 9));
+console.log(twoSum([2, 7, 11, 15], 9));
+console.log(twoSum([-1, -2, -18, -19, -20], -19));

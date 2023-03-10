@@ -35,8 +35,8 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 */
 
 // Hashmap approach
-// XX time complexity -
-// XX space complexity -
+// O(n) time complexity - n is the length of the array. We need to iterate through the nums array create a hashmap
+// O(n) space complexity - n is the length of the array. At worst, we create a map of length n for every element in nums
 
 /**
  * @param {number[]} nums
@@ -63,36 +63,8 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 // console.log(twoSum([2, 7, 13, 15], 9));
 
 // Refactored Hashmap approach:
-// XX time complexity -
-// XX space complexity -
-
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
- */
-// const twoSum = function (nums, target) {
-//   // declare map to track the remaining value needed to reach target
-//   // the key will be the remaining value and the associated value will be the index position
-//   const map = {};
-//   // iterate through nums
-//   for (let i = 0; i < nums.length; i++) {
-//     const remainder = target - nums[i];
-//     // Note: we need to check if it is undefined and not for truthy because the when i = 0, it will evaluate to falsy
-//     // at each iteration, check if nums[i] is the missing remainder value needed in map and if so,
-//     if (map[nums[i]] !== undefined) {
-//       // add the current index position to the array of indices and return it==
-//       return [map[nums[i]], i];
-//       // else add the needed remainder to map along with the current index position
-//     } else map[remainder] = i;
-//   }
-// };
-
-// console.log(twoSum([2, 7, 13, 15], 9));
-
-// Two-pointer Approach: Best for sorted input array following the same constraints as above
-// XX time complexity -
-// XX space complexity -
+// O(n) time complexity - n is the length of the array. We need to iterate through the nums array create a hashmap
+// O(n) space complexity - n is the length of the array. At worst, we create a map of length n for every element in nums
 
 /**
  * @param {number[]} nums
@@ -100,22 +72,51 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
  * @return {number[]}
  */
 const twoSum = function (nums, target) {
-  // sort the nums array in numerical order
-  // const sortedNums = [...nums].sort((a,b) => a - b);
-  // declare two pointer variables at the start and end of the array
-  let start = 0;
-  let end = nums.length - 1;
-  // execute while loop as long as start is less than end
-  while (start < end) {
-    // check if nums[start] + nums[end] is equal to target and if so, return an array with the start and end indices as elements
-    if (Math.abs(nums[start] + nums[end]) === Math.abs(target))
-      return [start, end];
-    // else check if nums[start] + nums[end] is less than target and if so, increment start
-    else if (Math.abs(nums[start] + nums[end]) < Math.abs(target)) start++;
-    // else decrement end
-    else end--;
+  // declare map to track the remaining value needed to reach target
+  // the key will be the remaining value and the associated value will be the index position
+  const map = {};
+  // iterate through nums
+  for (let i = 0; i < nums.length; i++) {
+    const remainder = target - nums[i];
+    // Note: we need to check if it is undefined and not for truthy because the when i = 0, it will evaluate to falsy
+    // at each iteration, check if nums[i] is the missing remainder value needed in map and if so,
+    if (map[nums[i]] !== undefined) {
+      // add the current index position to the array of indices and return it==
+      return [map[nums[i]], i];
+      // else add the needed remainder to map along with the current index position
+    } else map[remainder] = i;
   }
 };
+
+// console.log(twoSum([2, 7, 13, 15], 9));
+
+// Two-pointer Approach: Best for sorted input array following the same constraints as above
+// O(n) time complexity - n is the length of the array. At worst, only one pointer converges and it loops through the entire nums array
+// and the start and end pointers do not converge towards the center. The chances ofit being O(n/2) are higher.
+// O(1) space complexity - only pointer variables are used so constant memory is allocated
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+// const twoSum = function (nums, target) {
+//   // sort the nums array in numerical order
+//   // const sortedNums = [...nums].sort((a,b) => a - b);
+//   // declare two pointer variables at the start and end of the array
+//   let start = 0;
+//   let end = nums.length - 1;
+//   // execute while loop as long as start is less than end
+//   while (start < end) {
+//     // check if nums[start] + nums[end] is equal to target and if so, return an array with the start and end indices as elements
+//     if (Math.abs(nums[start] + nums[end]) === Math.abs(target))
+//       return [start, end];
+//     // else check if nums[start] + nums[end] is less than target and if so, increment start
+//     else if (Math.abs(nums[start] + nums[end]) < Math.abs(target)) start++;
+//     // else decrement end
+//     else end--;
+//   }
+// };
 
 console.log(twoSum([2, 7, 11, 15], 9));
 console.log(twoSum([-1, -2, -18, -19, -20], -19));

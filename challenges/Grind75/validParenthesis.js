@@ -34,6 +34,9 @@ s consists of parentheses only '()[]{}'.
  * @return {boolean}
  */
 
+// O(n) time complexity - n is the length of the string. We need to iterate through s and push or pop from the stack which takes constant time.   
+// O(n) space complexity - n is the length of the string. 
+// At worst, we have O(1) for the map and O(n) for the stack if we continue to push parens in and do not pop anything due to invalid parens
 const isValid = function (s) {
   // Optimization:
   // check if s is not evenly lengthed and if so return false

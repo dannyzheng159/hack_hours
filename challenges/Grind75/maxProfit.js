@@ -34,6 +34,11 @@ e.g. [7, 2, 5, 10, 2] => enter market on day 2 or index 1 where price is 2
                       => max profit = 10 - 2 = 8
 */
 
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+
 // Brute Force Approach
 // O(n^2) time complexity - n is the length of the array. Nested for-loop : For every n buy price, we need to iterate through n sell prices
 // O(1) space complexity - constant memory allocated for variables
@@ -53,6 +58,12 @@ e.g. [7, 2, 5, 10, 2] => enter market on day 2 or index 1 where price is 2
 // };
 
 // console.log(maxProfit([7, 2, 5, 10, 2]));
+
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
 
 // Two-Pointer Sliding Window
 // Note: there will be a window / subarray of buy and sell prices. We will consider that window/length of prices for the subarray as long as the sell price is greater than

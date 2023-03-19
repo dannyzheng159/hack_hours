@@ -107,4 +107,4 @@ const lowestCommonAncestor = function (root, p, q) {
 };
 
 console.log(lowestCommonAncestor(a, b, c)); // -> a
-console.log(lowestCommonAncestor(a, b, e)); // ->
+console.log(lowestCommonAncestor(a, b, e)); // -> b

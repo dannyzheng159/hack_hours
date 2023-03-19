@@ -4,18 +4,15 @@ Given the root of a binary tree, invert the tree, and return its root.
 Example 1:
 Input: root = [4,2,7,1,3,6,9]
 Output: [4,7,2,9,6,3,1]
-Example 2:
 
 Example 2: 
 Input: root = [2,1,3]
 Output: [2,3,1]
-Example 3:
 
 Example 3:
 Input: root = []
 Output: []
  
-
 Constraints:
 
 The number of nodes in the tree is in the range [0, 100].
@@ -163,10 +160,7 @@ output: [4, 7, 2, 9, 6, 3, 1]
 
 // Iterative DFS Approach:
 // O(n) time complexity - n is the number of nodes in the binary tree. We iterate through each node in a DFS manner with a while loop
-// O(n) space complexity - n is the number of nodes in the binary tree and at worst the stack stores up to the max number of n nodes if the tree is completely unbalanced and skewed on one side. The queue is a linear data structure.
-// At best for a balanced tree, the stack will store up to the number of levels/height of the tree which is O(log n).
-// Recall that for a balanced binary tree, each node has exactly two child nodes, so the number of nodes at each level doubles as we descend down the tree. 
-// Therefore, the height of a balanced binary tree with n nodes is log n. In a balanced binary tree, the maximum number of nodes at a given depth is 2^d, where d is the depth of the tree.
+// O(h) space complexity - h is the max height or longest path of binary tree and at worst the stack stores up to the max height h of the tree.Note that recursively, it would be O(n) because of the call stack.
 const invertTree = (root) => {
     // edge case: check if root is null and if so, return null
     if (!root) return null;

@@ -81,7 +81,7 @@ const m = new TreeNode();
 // Therefore, the total number of node visits for these subtrees are less than n in the worst case, which means the time complexity is still O(n).
 // isBalanced() recursively invokes height() on each node once until at worst, we traverse through the entire tree and is also an O(n) operation. This would mean that the binary tree is balanced. If we find any subtree to be unbalanced, we can end the operation early.
 // O(h) space complexity - h is the height of a the binary tree. At worst, the stack frame adds h call stacks equal to the maximum depth of the tree before it exits and returns back up the call stack
-// The intial invocation of height() takes up the most memory since we start at the left and right subtrees from the root. Each subsequent call takes up less space.
+// The initial invocation of height() takes up the most memory since we start at the left and right subtrees from the root. Each subsequent call takes up less space.
 // isBalanced recursively invokes height() on each node once until we traverse through the entire tree and is also O(h)
 /**
  * @param {TreeNode} root
